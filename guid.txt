@@ -1,0 +1,29 @@
+Normal Word Order (Big-Endian):
+Register 0: High word (bits 31-16)
+Register 1: Low word (bits 15-0)
+Combined: (Register 0 << 16) | Register 1
+
+Reverse Word Order (Little-Endian):
+Register 0: Low word (bits 15-0) 
+Register 1: High word (bits 31-16)
+Combined: (Register 1 << 16) | Register 0
+
+Code Implementation
+if reverse_words:
+    # Reverse word order (little-endian)
+    combined = (registers[1] << 16) | registers[0]
+else:
+    # Normal word order (big-endian)
+    combined = (registers[0] << 16) | registers[1]
+	
+	Why This Matters:
+Different Modbus devices store 32-bit values differently:
+
+Big-Endian: Most significant word first (common in many industrial devices)
+Little-Endian: Least significant word first (some manufacturers use this)
+Example:
+If you want to read a float value stored in registers 100-101:
+
+Normal: python modbus_client.py 192.168.1.100 100 FLOAT
+Reverse: python modbus_client.py 192.168.1.100 100 FLOAT --reverse-words
+The --reverse-words flag tells the script to swap the order when combining the two 16-bit registers into a 32-bit value.
