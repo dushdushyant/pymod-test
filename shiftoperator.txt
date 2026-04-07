@@ -1,0 +1,37 @@
+Simple Example:
+// Imagine we have two 16-bit registers:
+register0 = 0x1234  // (0001 0010 0011 0100 in binary)
+register1 = 0x5678  // (0101 0110 0111 1000 in binary)
+ 
+// Step 1: Shift register0 left by 16 bits
+register0 << 16 = 0x12340000
+// Before: 0000 0000 0000 0000  0001 0010 0011 0100
+// After:  0001 0010 0011 0100  0000 0000 0000 0000
+ 
+// Step 2: Combine with register1 using OR operator
+combined = (register0 << 16) | register1
+combined = 0x12340000 | 0x5678
+combined = 0x12345678
+ 
+// Result: 32-bit value with register0 as high word, register1 as low word
+Visual Representation:
+Normal (Big-Endian):
+register0 (High)    register1 (Low)
+[0x1234]           [0x5678]
+0001001000110100   0101011001111000
+                    ↓
+Combined 32-bit: 0x12345678
+0001001000110100 0101011001111000
+↑High word (16 bits)↑Low word (16 bits)↑
+Why We Do This:
+16-bit registers store values like 0x1234
+32-bit float needs 32 bits total
+Shift left by 16 moves the first register to the high position
+OR operation places the second register in the low position
+Reverse vs Normal:
+// Normal: register0=high, register1=low
+normal = (register0 << 16) | register1
+ 
+// Reverse: register0=low, register1=high  
+reverse = (register1 << 16) | register0
+The bit shift << 16 is simply moving 16 bits to make room for the second 16-bit value in the 32-bit result.
